@@ -4,44 +4,48 @@ import laughbot2 from '../assets/laughbot-2.png'
 import React from 'react'
 import { useState } from 'react'
 
-const Stage = () => {
+const Stage = (props) => {
 
     const [laughbotFrames, setLaughBotFrames] = useState([laughbot0, laughbot1, laughbot2])
     const [frameNum, setFrameNum] = useState(0)
 
-    let myInterval = null
-    let counter = 0
+    const [botTalking, setBotTalking] = useState(false)
 
-    function animateBot() {
-        // setFrameNum(frameNum + 1)
-        // if (frameNum >= laughtbotFrames.length-1) {
-        //     setFrameNum(frameNum - 1)
-        // }
+    const [stateInterval, setStateInterval] = useState(0)
+
+    let frame = 0
+
+    //animate the bot without using state variables until the end
+    function animateBot(){
+        if (frame >= laughbotFrames.length-1) {
+                    frame--
+                }else {
+                    frame++
+                }
+        setFrameNum(frame)
+    }
+
+    const startBot = () => {
+        setStateInterval(setInterval(() => {
+            animateBot()
+        }, 1000))
 
     }
 
-    function startBot()  {
-        console.log("starting bot counter")
-        myInterval = setInterval(() => {
-            setFrameNum(frameNum+1)
-            if (frameNum >= laughbotFrames.length -1){
-                setFrameNum(frameNum-1)
-            }
-            console.log('framenum', frameNum)
-        }, 1000);
-    }
-
-    function stopBot() {
-        console.log("stopped bot")
-        return () => clearInterval(myInterval)
+    const stopBot = () => {
+        clearInterval(stateInterval)
+        setFrameNum(0)
     }
 
   return (
     <div>On Stage
         <img src={laughbotFrames[frameNum]} style={{height:"500px"}} alt="laughbot" />
-        {/* <button onClick={(e) => animateBot()} >Animate</button> */}
-        <button onClick={startBot} >Start</button>
+        {/* <button onClick={startBot} >Start</button>
         <button onClick={stopBot} >Stop</button>
+        <button onClick={animateBot}>click to animate</button> */}
+        <button onClick={() => {setFrameNum(0)}}>reset animation</button>
+
+        <p>Robot is Talking: {JSON.stringify(props.talkFlag)}</p>
     </div>
   )
 }

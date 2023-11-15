@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Banner = () => {
+const Banner = (props) => {
   return (
     <div>Otto's Laughbot Comedy Club</div>
   )
