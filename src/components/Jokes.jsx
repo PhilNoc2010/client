@@ -6,9 +6,6 @@ const Jokes = (props) => {
     const [myVoice, setMyVoice] = useState("")
     const [allVoices, setAllVoices] = useState(null)
 
-    //create a state variable to track if the bot should be animating or not
-    const [botFlag, setBotFlag] = useState(false)
-
     let tts = window.speechSynthesis
     let voices = []
 
@@ -24,19 +21,15 @@ const Jokes = (props) => {
     populateVoices();
 
     function populateVoices(){
-        voices = tts.getVoices();
+        voices = tts.getVoices()
     }
-
 
     function tellJoke(e) {
         e.preventDefault()
 
-        // set a flag to indicate that the animation should start
-        setBotFlag(true)
-        console.log('robot is talking', JSON.stringify(botFlag))
-        props.talkTracker(botFlag)
-
+        props.talkTracker(true)
         const toSpeak = new SpeechSynthesisUtterance(joke)
+
         voices.forEach((voice) => {
             //get the correct voice object based on the chosen voice
             if (voice.name === myVoice){
@@ -45,20 +38,24 @@ const Jokes = (props) => {
         })
         tts.speak(toSpeak)
 
-        // reset the flag to indicate that the animation should stop
-
-        setBotFlag(!botFlag)
-        console.log('robot is still talking', JSON.stringify(botFlag))
-        props.talkTracker(botFlag)
+        toSpeak.onend = (e) => {
+            // reset the flag to indicate that the animation should stop because the talking has finished
+            console.log('the bot spoke for ', e.elapsedTime/1000, "seconds")
+            props.talkTracker(false)
+        }
     }
 
   return (
     <div>
         <h3>Click the button to hear the robot tell a joke</h3>
         {JSON.stringify(joke)}
+        {JSON.stringify(myVoice)}
         <form onSubmit={tellJoke}>
+            <div>
             <label htmlFor="joke">Enter a Joke Here</label>
             <input type='text' onChange={(e) => setJoke(e.target.value)} value={joke} placeholder='Enter your joke here'/>
+            </div>
+            <div>
             <label htmlFor='voice'>Choose a voice</label>
             <select name="voices" id="voice" onChange={(e) => setMyVoice(e.target.value)} value={myVoice}>
                 {allVoices ?
@@ -67,10 +64,9 @@ const Jokes = (props) => {
                     }) :  <option value="">Options Loading</option>
                 }
             </select>
+            </div>
             <button>Tell a Joke</button>
         </form>
-        <button onClick={() => {setBotFlag(!botFlag)}}>Trigger State</button>
-        <p>Talk State is Triggered: {JSON.stringify(botFlag)}</p>
 
     </div>
   )

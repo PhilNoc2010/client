@@ -16,12 +16,12 @@ const Stage = (props) => {
     let frame = 0
 
     //animate the bot without using state variables until the end
-    function animateBot(){
-        if (frame >= laughbotFrames.length-1) {
-                    frame--
-                }else {
-                    frame++
-                }
+    function animateBot() {
+        if (frame >= laughbotFrames.length - 1) {
+            frame--
+        } else {
+            frame++
+        }
         setFrameNum(frame)
     }
 
@@ -29,7 +29,6 @@ const Stage = (props) => {
         setStateInterval(setInterval(() => {
             animateBot()
         }, 1000))
-
     }
 
     const stopBot = () => {
@@ -37,17 +36,17 @@ const Stage = (props) => {
         setFrameNum(0)
     }
 
-  return (
-    <div>On Stage
-        <img src={laughbotFrames[frameNum]} style={{height:"500px"}} alt="laughbot" />
-        {/* <button onClick={startBot} >Start</button>
-        <button onClick={stopBot} >Stop</button>
-        <button onClick={animateBot}>click to animate</button> */}
-        <button onClick={() => {setFrameNum(0)}}>reset animation</button>
+    return (
+        <div>On Stage
+            <img src={laughbotFrames[frameNum]} style={{ height: "500px" }} alt="laughbot" />
+            {/* <p><button onClick={startBot} >Start</button></p>
+            <p><button onClick={stopBot} >Stop</button></p>
+            <p><button onClick={animateBot}>click to animate</button></p>
+            <p><button onClick={() => { setFrameNum(0) }}>reset animation</button></p> */}
 
-        <p>Robot is Talking: {JSON.stringify(props.talkFlag)}</p>
-    </div>
-  )
+            <p>Robot is Talking: {JSON.stringify(props.talkFlag)}</p>
+        </div>
+    )
 }
 
 export default Stage
