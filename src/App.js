@@ -6,14 +6,9 @@ import { useState } from 'react';
 
 function App() {
   const [botIsTalking, setBotIsTalking] = useState()
-  const [botTalk, setBotTalk] = useState()
 
   const talkTracker = ( talkFlag ) => {
     setBotIsTalking(talkFlag)
-  }
-
-  const botTalking = () => {
-
   }
 
   return (
@@ -23,8 +18,6 @@ function App() {
       <Jokes talkTracker={talkTracker} botTalking={botTalking} />
       <p>TalkTracker is set to: {JSON.stringify(botIsTalking)}</p>
     </div>
-
-
   );
 }
 

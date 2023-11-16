@@ -2,16 +2,22 @@ import laughbot0 from '../assets/laughbot-0.jpg'
 import laughbot1 from '../assets/laughbot-1.png'
 import laughbot2 from '../assets/laughbot-2.png'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Stage = (props) => {
 
     const [laughbotFrames, setLaughBotFrames] = useState([laughbot0, laughbot1, laughbot2])
     const [frameNum, setFrameNum] = useState(0)
 
-    const [botTalking, setBotTalking] = useState(false)
-
     const [stateInterval, setStateInterval] = useState(0)
+
+    useEffect(() => {
+        if (props.talkFlag === true) {
+            startBot()
+        } else if (props.talkFlag === false ){
+            stopBot()
+        }
+    }, [props.talkFlag])
 
     let frame = 0
 
@@ -28,7 +34,7 @@ const Stage = (props) => {
     const startBot = () => {
         setStateInterval(setInterval(() => {
             animateBot()
-        }, 1000))
+        }, 500))
     }
 
     const stopBot = () => {
