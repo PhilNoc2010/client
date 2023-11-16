@@ -15,7 +15,7 @@ function App() {
     <div className="App">
       <Banner />
       <Stage talkFlag={botIsTalking} />
-      <Jokes talkTracker={talkTracker} botTalking={botTalking} />
+      <Jokes talkTracker={talkTracker} />
       <p>TalkTracker is set to: {JSON.stringify(botIsTalking)}</p>
     </div>
   );
