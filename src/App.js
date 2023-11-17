@@ -2,6 +2,8 @@ import './App.css';
 import Banner from './components/Banner'
 import Stage from './components/Stage';
 import Jokes from './components/Jokes';
+import AddJoke from './components/AddJoke';
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useState } from 'react';
 
 function App() {
@@ -14,9 +16,13 @@ function App() {
   return (
     <div className="App">
       <Banner />
-      <Stage talkFlag={botIsTalking} />
-      <Jokes talkTracker={talkTracker} />
-      <p>TalkTracker is set to: {JSON.stringify(botIsTalking)}</p>
+      <Routes>
+        <Route path="/" element={<Navigate to="/tellajoke/" />}/>
+        <Route path="/tellajoke/" element={[
+                  <Stage talkFlag={botIsTalking} />,
+                  <Jokes talkTracker={talkTracker} />]} />
+        <Route path="/addajoke" element={[<AddJoke />]} />
+      </Routes>
     </div>
   );
 }

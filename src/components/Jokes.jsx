@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import axios from 'axios'
 
 const Jokes = (props) => {
     const [joke, setJoke] = useState("Is this thing on?")
@@ -20,8 +21,6 @@ const Jokes = (props) => {
     //     setAllVoices(filteredVoices)
     // },[])
 
-    populateVoices();
-
     function populateVoices() {
         console.log("generating voice list from populate voice function")
         voices = tts.getVoices()
@@ -32,25 +31,37 @@ const Jokes = (props) => {
         // setAllVoices(filteredVoices)
     }
 
+    populateVoices();
+
     function tellJoke(e) {
         e.preventDefault()
+        let randomJoke = ""
 
-        props.talkTracker(true)
-        const toSpeak = new SpeechSynthesisUtterance(joke)
+        randomJoke = axios.get("http://localhost:8000/api/randomjoke")
+            .then(res => {
+                randomJoke = res.data[0].setup + " " + res.data[0].punchline
 
-        filteredVoices.forEach((voice) => {
-            //get the correct voice object based on the chosen voice
-            if (voice.name === myVoice) {
-                toSpeak.voice = voice
-            }
-        })
-        tts.speak(toSpeak)
+                props.talkTracker(true)
+                const toSpeak = new SpeechSynthesisUtterance(randomJoke)
 
-        toSpeak.onend = (e) => {
-            // reset the flag to indicate that the animation should stop because the talking has finished
-            console.log('the bot spoke for ', e.elapsedTime / 1000, "seconds")
-            props.talkTracker(false)
-        }
+                filteredVoices.forEach((voice) => {
+                    //get the correct voice object based on the chosen voice
+                    if (voice.name === myVoice) {
+                        toSpeak.voice = voice
+                    }
+                })
+                tts.speak(toSpeak)
+
+                toSpeak.onend = (e) => {
+                    // reset the flag to indicate that the animation should stop because the talking has finished
+                    console.log('the bot spoke for ', e.elapsedTime / 1000, "seconds")
+                    props.talkTracker(false)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
     }
 
     return (
@@ -64,7 +75,7 @@ const Jokes = (props) => {
                     <input type='text' onChange={(e) => setJoke(e.target.value)} value={joke} placeholder='Enter your joke here' />
                 </div>
                 <div>
-                    <label htmlFor='voice'>Choose a voice</label>
+                    <label htmlFor='voice'>Choose a voice:</label>
                     <select name="voices" id="voice" onChange={(e) => setMyVoice(e.target.value)} value={myVoice}>
                         {filteredVoices ?
                             filteredVoices.map((voice, i) => {
