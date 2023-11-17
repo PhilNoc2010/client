@@ -43,14 +43,14 @@ const Stage = (props) => {
     }
 
     return (
-        <div>On Stage
-            <img src={laughbotFrames[frameNum]} style={{ height: "500px" }} alt="laughbot" />
+        <div>
+            <img src={laughbotFrames[frameNum]} style={{ width: "40%" }} alt="laughbot" />
             {/* <p><button onClick={startBot} >Start</button></p>
             <p><button onClick={stopBot} >Stop</button></p>
             <p><button onClick={animateBot}>click to animate</button></p>
             <p><button onClick={() => { setFrameNum(0) }}>reset animation</button></p> */}
 
-            <p>Robot is Talking: {JSON.stringify(props.talkFlag)}</p>
+            {/* <p>Robot is Talking: {JSON.stringify(props.talkFlag)}</p> */}
         </div>
     )
 }

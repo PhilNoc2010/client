@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/tellajoke/" />}/>
         <Route path="/tellajoke/" element={[
-                  <Stage talkFlag={botIsTalking} />,
+                  <Stage talkFlag={botIsTalking} key={1}/>,
                   <Jokes talkTracker={talkTracker} />]} />
         <Route path="/addajoke" element={[<AddJoke />]} />
       </Routes>
